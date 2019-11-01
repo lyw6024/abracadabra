@@ -1,0 +1,124 @@
+<html>
+<meta charset="utf-8">
+<title>不知所云生成器</title>
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cc.malic.xyz/webComponents/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+	<script src="http://cc.malic.xyz/webComponents/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	<link  href="http://cc.malic.xyz/webComponents/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+	<style>
+div#main{padding-left:10%;padding-right:10%;margin:auto}div #content{box-shadow:0px 1px 15px #999999;padding:20px}div.problem{border:solid 2px #CCC;padding:15px;margin:20px 0}div.codeBlocks{background-color:#eee}pre.sh_python{font-size:18px;font-family:"Consolas",Courier,monospace}@font-face{font-family:w0;src:url("fonts/chenxueru.ttf")}@font-face{font-family:w1;src:url("fonts/YiPinQingYeShouXieTi-2.ttf")}@font-face{font-family:w2;src:url("fonts/simayanModi.ttf")}@font-face{font-family:w3;src:url("fonts/ZhenHunNvHai-2.ttf")}p#ctx{font-size:16px;line-height:150%}
+</style>
+<body>
+	<div id="main">
+		<div id="content">
+	idea来自<a target="_blank" href="https://www.zhihu.com/question/349794499/answer/873505410"> 学生会退会申请六千字怎么写？ </a>原文作者用python写的。
+	<br>
+	此处优化了一部分语言结构，并用php重写，可以直接在网页中查看效果。
+<br>
+<div class="ui-widget">
+    
+</div>
+	<div style="padding: 25px;">
+	事件主题：
+	<input id="autocomplete" name="event" style="font-size: 16px;" value="退出学生会">
+	<br>
+<div id="radioset" style="padding: 20px 0;">
+	<input onchange="modifyVal(this)" type="radio" id="radio1" name="counterType" value="0" checked="checked"><label for="radio1">按字数计</label>
+	<input onchange="modifyVal(this)" type="radio" id="radio2" name="counterType" value="1"><label for="radio2">按句数计</label>
+</div>
+<input id="spinner" name="length" value="6000">
+<br>
+            <input type="checkbox" name="inwritten" id="inwritten" checked=true onchange="changeAlertOfWritten()">
+            <label for="inwritten">启用手写字体</label>
+            <div id="wtFontAlert" class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+        <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+        <strong> 首次启用手写时要加载约12.7MB的手写字体，可能会稍慢一些。</strong></p>
+
+    </div>
+<br>
+<button style="margin: 10px;" id="btn" onclick="showCxt()">生成</button>
+
+</div>
+	<hr>
+	<p id="ctx">
+	</p>
+</div>
+</div>
+	<script type="text/javascript">
+		$("#btn").button();
+		$("#radioset").buttonset();
+		$( "#spinner" ).spinner();
+        $("#inwritten").checkboxradio();
+
+var iKnow=false;
+function changeAlertOfWritten()
+{
+    if(iKnow==false)
+    {
+        r=document.getElementById("inwritten").checked;
+        if(r==true)
+        {
+            document.getElementById("wtFontAlert").style.display="";
+        }
+        else
+        {
+            document.getElementById("wtFontAlert").style.display="none";   
+            iKnow=true;
+        }
+    }
+}
+
+function modifyVal(x)
+{
+	if(x.value=="1")
+	{
+		document.getElementById("spinner").value=240;
+	}
+	else
+	{
+		document.getElementById("spinner").value=6000;
+	}
+}
+function showCxt()
+{
+    var xmlhttp;
+    evt=document.getElementById("autocomplete").value;
+    ctxLength=document.getElementById("spinner").value;
+    wc=document.getElementById("inwritten").checked;
+    isWritten="1";
+    if(wc==false)
+        isWritten="0";
+    rc=document.getElementsByName("counterType");
+    ctt='0';
+
+    for(i=0;i<rc.length;i++)
+    {
+    	if(rc[i].checked==true)
+    	{
+    		ctt=rc[i].value;
+    		break;
+    	}
+    }
+
+    if (window.XMLHttpRequest)
+    {
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            console.log("gen.php?event="+evt+"&length="+ctxLength+"&counterType="+ctt+"&isWritten="+isWritten);
+            document.getElementById("ctx").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","gen.php?event="+evt+"&length="+ctxLength+"&counterType="+ctt+"&isWritten="+isWritten,true);
+    xmlhttp.send();
+}
+	</script>
+</body>
+</html>
