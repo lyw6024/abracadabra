@@ -56,7 +56,7 @@ function sayProverbs($prvb,$prefix,$suffix)
     $pvContent=$prvb[$pvname];
     $pf=abracadabra($prefix);
     $sf=abracadabra($suffix);
-    return $pvname.$pf.$pvContent.$sf;
+    return $pvname.$pf.":".$pvContent.$sf;
 }
 
 $event=$_GET["event"];
